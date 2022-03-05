@@ -1,15 +1,16 @@
 package com.banks;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CentralBank {
-    private ArrayList<Bank> allBanks;
+    private List<Bank> allBanks;
 
     public CentralBank() {
         allBanks = new ArrayList<Bank>();
     }
 
-    public ArrayList<Bank> getAllBanks() {
+    public List<Bank> getAllBanks() {
         return allBanks;
     }
 
@@ -20,17 +21,17 @@ public class CentralBank {
 
     public void signalToBanks() {
         for (Bank bank : allBanks) {
-            for (ClientData i : bank.getClientInBank()) {
-                i.getAccountClient().changeAccountSum();
+            for (ClientData clientData : bank.getClientInBank()) {
+                clientData.getAccountClient().changeAccountSum();
             }
         }
     }
 
     public ClientData findAccountById(int id) {
         for (Bank bank : allBanks) {
-            for (ClientData i : bank.getClientInBank()) {
-                if (i.getAccountClient().getID() == id) {
-                    return i;
+            for (ClientData clientData : bank.getClientInBank()) {
+                if (clientData.getAccountClient().getID() == id) {
+                    return clientData;
                 }
             }
         }

@@ -1,16 +1,17 @@
 package com.banks;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Bank {
     private String nameBank;
-    private ArrayList<ClientData> clientInBank;
+    private List<ClientData> clientInBank;
     private double debitPercentageInBank;
-    private ArrayList<InterestBorder> interestBorderDeposit;
+    private List<InterestBorder> interestBorderDeposit;
     private int commission;
     private int notInitializedLimit;
-    private ArrayList<ClientData> subscription;
+    private List<ClientData> subscription;
 
     public Bank(String name, double debitPercentageInBank, ArrayList<InterestBorder> interestBorderDeposit, int commission, int notInitializedLimit) {
         nameBank = name;
@@ -22,7 +23,7 @@ public class Bank {
         subscription = new ArrayList<ClientData>();
     }
 
-    public ArrayList<ClientData> getClientInBank() {
+    public List<ClientData> getClientInBank() {
         return clientInBank;
     }
 
@@ -44,20 +45,21 @@ public class Bank {
     }
 
     public DepositAccount openDepositAccount(int sum, int accumulationPeriod) {
+        final int NOT_INITIALIZED_SUM_BORDER=-1;
         double nowInterst = -1;
-        for (InterestBorder i : interestBorderDeposit) {
-            if ((sum < i.getSumBoarder()) && (i.getSumBoarder() != -1)) {
-                nowInterst = i.getInterest();
+        for (InterestBorder interestBorder : interestBorderDeposit) {
+            if ((sum < interestBorder.getSumBoarder()) && (interestBorder.getSumBoarder() != NOT_INITIALIZED_SUM_BORDER)) {
+                nowInterst = interestBorder.getInterest();
                 break;
             }
         }
 
-        if (nowInterst == -1) {
+        if (nowInterst == NOT_INITIALIZED_SUM_BORDER) {
             nowInterst = interestBorderDeposit.get(interestBorderDeposit.size() - 1).getInterest();
         }
 
         var depositAccount = new DepositAccount(nowInterst, accumulationPeriod);
-        depositAccount.Sum = sum;
+        depositAccount.sum = sum;
         return depositAccount;
     }
 
@@ -71,10 +73,10 @@ public class Bank {
     }
 
     public void putMoneyToAccount(ClientData clientData, int sum) throws Exception {
-        for (ClientData i : clientInBank) {
-            if (i.getAccountClient().getID() == clientData.getAccountClient().getID()) {
-                i.getAccountClient().Sum = i.getAccountClient().Sum + sum;
-                i.getClientTransactions().add(new Transaction("Put money", sum));
+        for (ClientData clientDataInBank : clientInBank) {
+            if (clientDataInBank.getAccountClient().getID() == clientData.getAccountClient().getID()) {
+                clientDataInBank.getAccountClient().sum = clientDataInBank.getAccountClient().sum + sum;
+                clientDataInBank.getClientTransactions().add(new Transaction("Put money", sum));
                 return;
             }
         }
@@ -88,29 +90,29 @@ public class Bank {
 
     public void withdrawMoney(ClientData clientData, int sum) throws Exception {
         if (checkDoubtful(clientData, sum)) {
-            clientData.getAccountClient().Sum = clientData.getAccountClient().Sum - sum;
+            clientData.getAccountClient().sum = clientData.getAccountClient().sum - sum;
             clientData.getClientTransactions().add(new Transaction("Withdrew money", sum));
         }
     }
 
-    public void transferMoney(ClientData clientData1, ClientData clientData2, int sum) throws Exception {
-        if (checkDoubtful(clientData1, sum)) {
-            clientData1.getAccountClient().Sum = clientData1.getAccountClient().Sum - sum;
-            clientData1.getClientTransactions().add(new Transaction("Transfer withdrawal", sum));
-            clientData2.getAccountClient().Sum = clientData2.getAccountClient().Sum + sum;
-            clientData2.getClientTransactions().add(new Transaction("Transfer receiving", sum));
+    public void transferMoney(ClientData firstClientData, ClientData otherClientData, int sum) throws Exception {
+        if (checkDoubtful(firstClientData, sum)) {
+            firstClientData.getAccountClient().sum = firstClientData.getAccountClient().sum - sum;
+            firstClientData.getClientTransactions().add(new Transaction("Transfer withdrawal", sum));
+            otherClientData.getAccountClient().sum = otherClientData.getAccountClient().sum + sum;
+            otherClientData.getClientTransactions().add(new Transaction("Transfer receiving", sum));
         }
     }
 
-    public void cancelTransaction(ClientData clientData1, String transactionName, double sum) {
-        for (Transaction i : clientData1.getClientTransactions()) {
-            if (Objects.equals(transactionName, i.getTransactionName()) && sum == i.getSum()) {
-                if (Objects.equals(i.getTransactionName(), "Transfer receiving") || Objects.equals(i.getTransactionName(), "Put money")) {
-                    clientData1.getAccountClient().Sum -= sum;
+    public void cancelTransaction(ClientData clientData, String transactionName, double sum) {
+        for (Transaction transaction : clientData.getClientTransactions()) {
+            if (Objects.equals(transactionName, transaction.getTransactionName()) && sum == transaction.getSum()) {
+                if (Objects.equals(transaction.getTransactionName(), "Transfer receiving") || Objects.equals(transaction.getTransactionName(), "Put money")) {
+                    clientData.getAccountClient().sum -= sum;
                 }
 
-                if (Objects.equals(i.getTransactionName(), "Transfer withdrawal") || Objects.equals(i.getTransactionName(), "Withdrew money")) {
-                    clientData1.getAccountClient().Sum += sum;
+                if (Objects.equals(transaction.getTransactionName(), "Transfer withdrawal") || Objects.equals(transaction.getTransactionName(), "Withdrew money")) {
+                    clientData.getAccountClient().sum += sum;
                 }
             }
         }

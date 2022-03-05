@@ -12,19 +12,19 @@ public class CreditAccount extends Account {
 
     @Override
     public void changeAccountSum() {
-        if (Sum < 0) {
-            Sum = Sum - commission;
+        if (sum < 0) {
+            sum = sum - commission;
         }
     }
 
     @Override
     public boolean checkWithdraw(int sum) {
-        if (sum > Sum) {
-            if (Math.abs(Sum - sum) < creditLimit) {
+        if (sum > this.sum) {
+            if (Math.abs(this.sum - sum) < creditLimit) {
                 System.out.println("Credit limit exceeded");
             }
 
-            return Math.abs(Sum - sum) < creditLimit;
+            return Math.abs(this.sum - sum) < creditLimit;
         } else {
             return true;
         }

@@ -3,15 +3,15 @@ package com.banks;
 public abstract class Account {
     private static int Id = 0;
     private int ID;
-    protected double Sum;
+    protected double sum;
 
     public Account() {
-        Sum = 0;
+        sum = 0;
         Id++;
         ID = Id;
     }
     public double getSum(){
-        return Sum;
+        return sum;
     }
     public int getID(){
         return ID;

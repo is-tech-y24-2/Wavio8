@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         CentralBank newCentralBank = new CentralBank();
         Scanner console = new Scanner(System.in);
-        var bank1 = newCentralBank.registrationBank("BSP", 4, new ArrayList<InterestBorder>(Arrays.asList(new InterestBorder(50000, 3), new InterestBorder(100000, 4), new InterestBorder(-1, 5))), 100, 10000);
+        Bank bank1 = newCentralBank.registrationBank("BSP", 4, new ArrayList<InterestBorder>(Arrays.asList(new InterestBorder(50000, 3), new InterestBorder(100000, 4), new InterestBorder(-1, 5))), 100, 10000);
 
         while (true) {
             System.out.println("ENTER information:");
@@ -34,53 +34,53 @@ public class Main {
                 System.out.println("5)Withdraw Money ");
                 System.out.println("6)Money transfer ");
                 System.out.println("7)Сhange user ");
-                var ans = console.nextInt();
+                int ans = console.nextInt();
                 if (ans == 7) {
                     break;
                 }
 
                 if (ans == 1 || ans == 2 || ans == 3) {
-                    var client3 = new ClientDirector(new ClientBuilder(), nameClient, surnameClient)
+                    Client client3 = new ClientDirector(new ClientBuilder(), nameClient, surnameClient)
                             .getClientBuilder()
                             .addAddress(address)
                             .addPassportNumber(passportNumber).makeClient();
                     System.out.println("Сlient is registered. ");
                     System.out.println();
                     if (ans == 1) {
-                        var account = newCentralBank.openAccount(client3, bank1.openDebitAccount(), bank1);
+                        ClientData account = newCentralBank.openAccount(client3, bank1.openDebitAccount(), bank1);
                         System.out.println("Debit account created. Amount on account: 0 . ID account " + account.getAccountClient().getID());
                         System.out.println();
                     } else if (ans == 2) {
                         System.out.println("Enter the initial deposit amount: ");
-                        var sum = console.nextInt();
+                        int sum = console.nextInt();
                         System.out.println("Enter the accumulation period: ");
-                        var period = console.nextInt();
-                        var account = newCentralBank.openAccount(client3, bank1.openDepositAccount(sum, period), bank1);
+                        int period = console.nextInt();
+                        ClientData account = newCentralBank.openAccount(client3, bank1.openDepositAccount(sum, period), bank1);
                         System.out.println("Deposit account created. Amount on account: " + sum + " ID account " + account.getAccountClient().getID());
                         System.out.println();
                     } else if (ans == 3) {
-                        var account = newCentralBank.openAccount(client3, bank1.openCreditAccount(20000), bank1);
+                        ClientData account = newCentralBank.openAccount(client3, bank1.openCreditAccount(20000), bank1);
                         System.out.println("Credit account created. Amount on account: 0 ID account " + account.getAccountClient().getID());
                         System.out.println();
                     }
                 } else {
                     System.out.println("Enter ID account ");
-                    var id = console.nextInt();
-                    var clientData = newCentralBank.findAccountById(id);
+                    int id = console.nextInt();
+                    ClientData clientData = newCentralBank.findAccountById(id);
                     if (ans == 4) {
                         System.out.println("Enter sum to put money");
-                        var sum = console.nextInt();
+                        int sum = console.nextInt();
                         bank1.putMoneyToAccount(clientData, sum);
                     } else if (ans == 5) {
                         System.out.println("Enter sum to withdraw money");
-                        var sum = console.nextInt();
+                        int sum = console.nextInt();
                         bank1.withdrawMoney(clientData, sum);
                     } else if (ans == 6) {
                         System.out.println("Enter ID another account");
-                        var id2 = console.nextInt();
-                        var clientData2 = newCentralBank.findAccountById(id2);
+                        int id2 = console.nextInt();
+                        ClientData clientData2 = newCentralBank.findAccountById(id2);
                         System.out.println("Enter sum to transfer");
-                        var sum = console.nextInt();
+                        int sum = console.nextInt();
                         bank1.transferMoney(clientData, clientData2, sum);
                     }
 
