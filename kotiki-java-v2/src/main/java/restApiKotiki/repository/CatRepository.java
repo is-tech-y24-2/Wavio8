@@ -4,7 +4,6 @@ package restApiKotiki.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import restApiKotiki.models.Cat;
-import restApiKotiki.models.Owner;
 
 import java.util.List;
 

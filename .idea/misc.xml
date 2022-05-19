@@ -4,6 +4,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/kotiki-java/pom.xml" />
+        <option value="$PROJECT_DIR$/kotiki-java-v2/pom.xml" />
       </list>
     </option>
   </component>
