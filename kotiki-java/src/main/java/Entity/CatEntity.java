@@ -13,6 +13,7 @@ public class CatEntity {
     @Id
     @Column(name = "id", nullable = false)
     private int id;
+
     @Basic
     @Column(name = "name", nullable = false, length = -1)
     private String name;
@@ -29,9 +30,11 @@ public class CatEntity {
     @Basic
     @Column(name = "bread", nullable = true, length = -1)
     private String bread;
+
     @ManyToOne
     @JoinColumn(name = "id_owner", referencedColumnName = "id", updatable = false, insertable = false)
     private OwnerEntity ownerByIdOwner;
+
     @OneToOne(mappedBy = "catByIdCat")
     private CatsFriendEntity catsFriendById;
     @OneToMany(mappedBy = "catByIdCatFriend")

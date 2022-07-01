@@ -31,6 +31,7 @@ public class CatsFriendEntity {
         this.idCatFriend = idCatFriend;
     }
 
+
     public int getIdCat() {
         return idCat;
     }

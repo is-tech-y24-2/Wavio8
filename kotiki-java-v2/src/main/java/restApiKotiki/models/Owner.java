@@ -2,7 +2,6 @@ package restApiKotiki.models;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "owner", schema = "public", catalog = "lab3")
